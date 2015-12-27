@@ -1,0 +1,411 @@
+Last login: Mon Jun 23 13:43:21 2014 from pool-173-73-13-88.washdc.fios.verizon.net
+[?1034h]0;pvalapadasu@plopper: ~pvalapadasu@plopper:~$ cat slb3a-Master.txt
+Last login: Mon Jun 23 17:56:22 2014 from 67.221.32.59
+
+ACOS system is ready now.
+
+[type ? for help]
+
+slb3a.iad2-Active-vMaster[1/1]>en
+Password:
+slb3a.iad2-Active-vMaster[1/1]#term len 0
+slb3a.iad2-Active-vMaster[1/1]#sh run 
+!Current configuration: 7193 bytes
+!Configuration last updated at 17:56:04 EDT Mon Jun 23 2014
+!Configuration last saved at 17:56:29 EDT Mon Jun 23 2014
+!version 2.7.1-P1, build 76 (Jun-08-2013,06:23)
+!
+vrrp-a device-id 1
+vrrp-a set-id 1
+vcs enable
+vcs vMaster-id 1
+vcs config-info 0a6f1d8a1e9e62e2 160
+vcs chassis-id 1
+vcs floating-ip 97.64.24.115 /26
+vcs ssl-enable
+vcs multicast-ip 224.0.0.210
+vcs device 1
+ priority 200
+ interfaces management
+ enable
+ affinity-vrrp-a-vrid default
+vcs device 2
+ priority 199
+ interfaces management
+ enable
+ affinity-vrrp-a-vrid default
+vcs device 3
+ priority 198
+ interfaces management
+ enable
+ affinity-vrrp-a-vrid default
+vcs local-device 1
+!
+hostname slb3a.iad2 device 1
+hostname slb3b.iad2 device 2
+hostname slb3c.iad2 device 3
+clock timezone America/New_York
+!
+ntp server 204.11.217.43
+!
+ntp server 204.11.216.205
+!
+trunk 1/1
+ ethernet 1
+!
+trunk 1/2
+ ethernet 2
+!
+trunk 2/1
+ ethernet 1
+!
+trunk 2/2
+ ethernet 2
+!
+trunk 3/1
+ ethernet 1
+!
+trunk 3/2
+ ethernet 2
+!
+vlan 1/671
+ tagged ethernet 1
+ router-interface ve 671
+ name "vrrpa-slb-outside"
+!
+vlan 1/672
+ tagged ethernet 2
+ router-interface ve 672
+ name "vrrpa-slb-inside"
+!
+vlan 1/677
+ tagged ethernet 2
+ router-interface ve 677
+ name "vrrpa-slb-HA"
+!
+vlan 2/671
+ tagged ethernet 1
+ router-interface ve 671
+ name "vrrpa-slb-outside"
+!
+vlan 2/672
+ tagged ethernet 2
+ router-interface ve 672
+ name "vrrpa-slb-inside"
+!
+vlan 2/677
+ tagged ethernet 2
+ router-interface ve 677
+ name "vrrpa-slb-HA"
+!
+vlan 3/671
+ tagged ethernet 1
+ router-interface ve 671
+ name "vrrpa-slb-outside"
+!
+vlan 3/672
+ tagged ethernet 2
+ router-interface ve 672
+ name "vrrpa-slb-inside"
+!
+vlan 3/677
+ tagged ethernet 2
+ router-interface ve 677
+ name "vrrpa-slb-HA"
+!
+accounting exec start-stop tacplus
+accounting commands 15 stop-only tacplus
+!
+
+!
+
+
+interface management device 1
+ ip address 97.64.24.112 255.255.255.192
+ ip default-gateway 97.64.24.65
+ flow-control
+!
+interface management device 2
+ ip address 97.64.24.113 255.255.255.192
+ flow-control
+!
+interface management device 3
+ ip address 97.64.24.114 255.255.255.192
+ flow-control
+!
+interface ethernet 1/3
+ disable
+!
+interface ethernet 1/4
+ disable
+!
+interface ethernet 1/5
+ disable
+!
+interface ethernet 1/6
+ disable
+!
+interface ethernet 1/7
+ disable
+!
+interface ethernet 1/8
+ disable
+!
+interface ethernet 1/9
+ disable
+!
+interface ethernet 1/10
+ disable
+!
+interface ethernet 1/11
+ disable
+!
+interface ethernet 1/12
+ disable
+!
+interface ve 1/671
+ ip address 69.194.11.71 255.255.255.224
+!
+interface ve 1/672
+ ip address 69.194.11.134 255.255.255.128
+!
+interface ve 1/677
+ ip address 192.168.24.1 255.255.255.248
+!
+interface ethernet 2/3
+ disable
+!
+interface ethernet 2/4
+ disable
+!
+interface ethernet 2/5
+ disable
+!
+interface ethernet 2/6
+ disable
+!
+interface ethernet 2/7
+ disable
+!
+interface ethernet 2/8
+ disable
+!
+interface ethernet 2/9
+ disable
+!
+interface ethernet 2/10
+ disable
+!
+interface ethernet 2/11
+ disable
+!
+interface ethernet 2/12
+ disable
+!
+interface ve 2/671
+ ip address 69.194.11.72 255.255.255.224
+!
+interface ve 2/672
+ ip address 69.194.11.135 255.255.255.128
+!
+interface ve 2/677
+ ip address 192.168.24.2 255.255.255.248
+!
+interface ethernet 3/3
+ disable
+!
+interface ethernet 3/4
+ disable
+!
+interface ethernet 3/5
+ disable
+!
+interface ethernet 3/6
+ disable
+!
+interface ethernet 3/7
+ disable
+!
+interface ethernet 3/8
+ disable
+!
+interface ethernet 3/9
+ disable
+!
+interface ethernet 3/10
+ disable
+!
+interface ethernet 3/11
+ disable
+!
+interface ethernet 3/12
+ disable
+!
+interface ve 3/671
+ ip address 69.194.11.73 255.255.255.224
+!
+interface ve 3/672
+ ip address 69.194.11.136 255.255.255.128
+!
+interface ve 3/677
+ ip address 192.168.24.3 255.255.255.248
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+vrrp-a enable
+vrrp-a hello-interval 5
+vrrp-a fail-over-policy-template VRRP-TEMPLATE-SHARED
+   vlan 671 timeout 2 weight 200
+   trunk 1 weight 200
+   trunk 2 weight 200
+!
+vrrp-a vrid default
+   preempt-mode disable
+   floating-ip 69.194.11.133
+   floating-ip 69.194.11.70
+   priority 200 device 1
+   fail-over-policy-template VRRP-TEMPLATE-SHARED device 1
+   priority 190 device 2
+   fail-over-policy-template VRRP-TEMPLATE-SHARED device 2
+   priority 180 device 3
+   fail-over-policy-template VRRP-TEMPLATE-SHARED device 3
+   tracking-options
+      trunk 1/1 priority-cost 15
+      trunk 1/2 priority-cost 15
+      trunk 2/1 priority-cost 15
+      trunk 2/2 priority-cost 15
+      trunk 3/2 priority-cost 15
+      trunk 3/1 priority-cost 15
+!
+vrrp-a interface ethernet 1 both vlan 677 device 1
+vrrp-a interface ethernet 2 both vlan 677 device 1
+vrrp-a interface ethernet 1 both vlan 677 device 2
+vrrp-a interface ethernet 2 both vlan 677 device 2
+vrrp-a interface ethernet 1 both vlan 677 device 3
+vrrp-a interface ethernet 2 both vlan 677 device 3
+!
+!
+! 
+! 
+! 
+!
+extended-stats
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+logging console emergency
+logging syslog information
+no logging buffered
+logging trap critical
+logging host 69.194.7.199 port 514
+!
+snmp-server enable
+snmp-server enable traps snmp
+snmp-server enable traps ha
+snmp-server enable traps slb
+snmp-server enable traps system
+snmp-server enable traps network
+snmp-server location "UNKNOWN"
+snmp-server contact "UNKNOWN"
+snmp-server host 69.194.7.199  version v2c doublemint udp-port 162
+snmp-server community read doublemint remote 67.221.32.59
+snmp-server community read doublemint remote 67.221.32.50
+snmp-server community read doublemint remote 204.11.216.18
+snmp-server community read doublemint remote 204.11.216.16
+snmp-server community read doublemint remote 67.221.32.41
+snmp-server community read doublemint remote 69.194.0.71
+snmp-server community read doublemint remote 204.11.222.80
+snmp-server community read doublemint remote 69.194.0.82
+snmp-server community read doublemint remote 97.64.97.132
+snmp-server community read doublemint remote 69.194.7.196
+snmp-server community read doublemint remote default
+!
+enable-management device 1 service snmp ve 672
+fail-safe hw-error-monitor-enable
+!
+!
+!
+!
+ip dns primary 204.11.216.205
+ip dns secondary 204.11.217.43
+ip dns suffix peakwebhosting.com
+!
+monitor buffer-usage 734003
+!
+web-service timeout-policy idle 30
+!
+!
+
+
+
+
+enable-core
+!
+!
+!
+!
+banner login multi-line ^C
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+       WARNING:  UNAUTHORIZED PERSONS ........ DO NOT PROCEED
+This computer system is designated for PRIVATE use only and may be
+accessed and used only by authorized users.  The data and programs which
+are contained in this system may not be accessed, viewed, copied, modified,
+distributed, or disclosed without prior approval of the SYSTEM OWNER
+Access and use, or causing access and use, of this computer system
+by anyone without the permissions of, or other than as permitted by the
+SYSTEM OWNER are strictly prohibited by State and Federal laws,
+and may subject an unauthorized user to criminal and civil penalties.
+The use of this system is routinely monitored and recorded, and anyone
+accessing this system consents to such monitoring and recording.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-^C
+!
+terminal idle-timeout 30
+no terminal auto-size
+terminal width 80
+terminal length 0
+!
+end
+
+slb3a.iad2-Active-vMaster[1/1]#
+slb3a.iad2-Active-vMaster[1/1]#
+slb3a.iad2-Active-vMaster[1/1]#
+slb3a.iad2-Active-vMaster[1/1]#
+slb3a.iad2-Active-vMaster[1/1]#exit
+slb3a.iad2-Active-vMaster[1/1]>exut  it
+Are you sure to quit (N/Y)?: y
+]0;pvalapadasu@plopper: ~pvalapadasu@plopper:~$ exit
+logout
